@@ -1,2 +1,2 @@
 # maze2
-Maze v2.0
+https://leonidfeskov.github.io/maze2/

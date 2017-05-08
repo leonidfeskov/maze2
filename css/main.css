@@ -1,0 +1,55 @@
+body {
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+}
+
+.maze {
+	border: 2px solid #000;
+	margin: 0 auto;
+	position: relative;
+	float: left;
+}
+
+.maze:before, .maze:after {
+	content: '';
+	background: url(../i/arrow.png) no-repeat 50% 50%;
+	background-size: cover;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+}
+
+.maze:before {
+	top: 100%;
+	left: 0;
+	transform: rotate(90deg);
+}
+
+.maze:after {
+	left: 100%;
+	top: 0;
+	transform: rotate(180deg);
+}
+
+
+.maze-map {
+	display: block;
+}
+
+.unit {
+	background: url(../i/joker.png) no-repeat 50% 50%;
+	background-size: cover;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	transition: all 0.5s linear 0s;
+}
+
+.unit_player {
+	background-image: url(../i/batman.png);
+	z-index: 1;
+	transition-duration: 0.1s;
+}
