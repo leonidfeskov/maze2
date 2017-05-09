@@ -49,4 +49,10 @@ export default class Unit {
 		this.node.style.left = (this.x * SIZE_CELL) + 'px';
 		this.node.style.top = (this.y * SIZE_CELL) + 'px';
 	}
+
+	redrawDirection(direction) {
+		let classes = this.node.classList;
+		classes.remove('left', 'up', 'right', 'down');
+		classes.add(direction.toLowerCase());
+	}
 }

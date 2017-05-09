@@ -6,11 +6,11 @@ var isInScope = function(map, coord) {
 };
 
 export default function generateMaze(width, height) {
-    // размеры лабиринта должны быть нечетными
-    height = height % 2 == 0 ? height+1 : height;
-    width = width % 2 == 0 ? width + 1 : width;
-    var currentPosition = [0, 0];
+    // уменьшаем размер на 2 клетки, потому что потом добавим стены вокруг лабиринта
+    width = width - 2;
+    height = height - 2;
 
+    var currentPosition = [0, 0];
     var map = [];
     var walls = [];
 
@@ -47,7 +47,20 @@ export default function generateMaze(width, height) {
         }
     }
 
-    map[0][width - 1] = CELL_EXIT;
+    // добавдяем стены вокруг всего лабиринта
+    var horizontalBorder = []
+    for (var x = 0; x < width + 2; x++) {
+        horizontalBorder.push(CELL_WALL);
+    }
+    for (var y = 0; y < height; y++) {
+        map[y].push(CELL_WALL);
+        map[y].unshift(CELL_WALL);
+    }
+
+    map.push(horizontalBorder);
+    map.unshift(horizontalBorder);
+
+    map[1][width + 1] = CELL_EXIT;
 
     return map;
 };

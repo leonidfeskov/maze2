@@ -1,55 +1,51 @@
 body {
-	background-color: #fff;
+	background-color: #ddd;
 	margin: 0;
 	padding: 0;
 }
 
-.maze {
-	border: 2px solid #000;
+.maze-overflow {
+	border: 3px solid #000;
+	box-sizing: border-box;
 	margin: 0 auto;
 	position: relative;
-	float: left;
+	overflow: hidden;
 }
 
-.maze:before, .maze:after {
-	content: '';
-	background: url(../i/arrow.png) no-repeat 50% 50%;
-	background-size: cover;
-	width: 50px;
-	height: 50px;
+.maze {
 	position: absolute;
-}
-
-.maze:before {
-	top: 100%;
+	bottom: 0;
 	left: 0;
-	transform: rotate(90deg);
+	transition: all 0.2s ease 0s;
 }
-
-.maze:after {
-	left: 100%;
-	top: 0;
-	transform: rotate(180deg);
-}
-
 
 .maze-map {
 	display: block;
 }
 
 .unit {
-	background: url(../i/joker.png) no-repeat 50% 50%;
-	background-size: cover;
+	background: url(../i/zombie_left.gif) no-repeat 0 0;
+	background-size: 80% auto;
 	width: 50px;
 	height: 50px;
 	position: absolute;
 	left: 0;
 	top: 0;
-	transition: all 0.5s linear 0s;
+	transition: left 0.5s linear 0s, top 0.5s linear 0s;
 }
 
+.unit.left {background-image: url(../i/zombie_left.gif);}
+.unit.down {background-image: url(../i/zombie_left.gif);}
+.unit.right {background-image: url(../i/zombie_right.gif);}
+.unit.up {background-image: url(../i/zombie_right.gif);}
+
 .unit_player {
-	background-image: url(../i/batman.png);
+	background-image: url(../i/player_left.gif);
 	z-index: 1;
 	transition-duration: 0.1s;
 }
+
+.unit_player.left {background-image: url(../i/player_left.gif);}
+.unit_player.down {background-image: url(../i/player_left.gif);}
+.unit_player.right {background-image: url(../i/player_right.gif);}
+.unit_player.up {background-image: url(../i/player_right.gif);}

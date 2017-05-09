@@ -23,3 +23,10 @@ export function getOpppositeDirection(direction) {
 		return 'Up';
 	}
 }
+
+const checkImage = texture =>
+	new Promise(resolve => {
+		texture.onload = () => resolve();
+	});
+
+export const loadImages = (...textures) => Promise.all(textures.map(checkImage));
