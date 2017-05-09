@@ -1,2 +1,4 @@
-# maze2
-https://leonidfeskov.github.io/maze2/
+# Лабиринт
+Найдите выход, управляя стрелками на клавиатуре. Опосайтесь замби.
+
+[Demo](https://leonidfeskov.github.io/maze2/)
