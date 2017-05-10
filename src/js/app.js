@@ -18,7 +18,7 @@ mazeOverflowNode.style.height = mapSize + 'px';
 
 // создаем игру
 let game = new Game({
-	monsters: 7
+	monsters: 25
 });
 
 // пауза

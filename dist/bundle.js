@@ -72,10 +72,10 @@
 
 "use strict";
 // размеры лабиринта должны быть нечетными
-const CELLS_BY_X = 33;
+const CELLS_BY_X = 55;
 /* harmony export (immutable) */ __webpack_exports__["c"] = CELLS_BY_X;
 
-const CELLS_BY_Y = 33;
+const CELLS_BY_Y = 55;
 /* harmony export (immutable) */ __webpack_exports__["d"] = CELLS_BY_Y;
 
 const CELLS_ON_SCREEN = 11;
@@ -497,7 +497,7 @@ mazeOverflowNode.style.height = mapSize + 'px';
 
 // создаем игру
 let game = new __WEBPACK_IMPORTED_MODULE_1__components_Game__["a" /* default */]({
-	monsters: 7
+	monsters: 25
 });
 
 // пауза

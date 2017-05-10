@@ -1,6 +1,6 @@
 // размеры лабиринта должны быть нечетными
-export const CELLS_BY_X = 33;
-export const CELLS_BY_Y = 33;
+export const CELLS_BY_X = 55;
+export const CELLS_BY_Y = 55;
 export const CELLS_ON_SCREEN = 11;
 
 let width = window.innerWidth;
