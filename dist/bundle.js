@@ -362,28 +362,32 @@ class Game {
             let controlUp = controls.querySelector('.js-control-up');
             let controlDown = controls.querySelector('.js-control-down');
 
-            controlLeft.addEventListener('touchstart', function () {
+            controlLeft.addEventListener('touchstart', function (event) {
+                event.preventDefault();
                 checkAndMoveLeft();
                 this.map.updatePosition(this.player.x, this.player.y);
                 this.checkWin();
                 this.checkLoss();
             }.bind(this));
 
-            controlRight.addEventListener('touchstart', function () {
+            controlRight.addEventListener('touchstart', function (event) {
+                event.preventDefault();
                 checkAndMoveRight();
                 this.map.updatePosition(this.player.x, this.player.y);
                 this.checkWin();
                 this.checkLoss();
             }.bind(this));
 
-            controlUp.addEventListener('touchstart', function () {
+            controlUp.addEventListener('touchstart', function (event) {
+                event.preventDefault();
                 checkAndMoveUp();
                 this.map.updatePosition(this.player.x, this.player.y);
                 this.checkWin();
                 this.checkLoss();
             }.bind(this));
 
-            controlDown.addEventListener('touchstart', function () {
+            controlDown.addEventListener('touchstart', function (event) {
+                event.preventDefault();
                 checkAndMoveDown();
                 this.map.updatePosition(this.player.x, this.player.y);
                 this.checkWin();
@@ -493,7 +497,7 @@ mazeOverflowNode.style.height = mapSize + 'px';
 
 // создаем игру
 let game = new __WEBPACK_IMPORTED_MODULE_1__components_Game__["a" /* default */]({
-	monsters: 0
+	monsters: 7
 });
 
 // пауза
