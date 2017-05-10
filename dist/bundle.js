@@ -362,10 +362,33 @@ class Game {
             let controlUp = controls.querySelector('.js-control-up');
             let controlDown = controls.querySelector('.js-control-down');
 
-            controlLeft.addEventListener('touchstart', checkAndMoveLeft);
-            controlRight.addEventListener('touchstart', checkAndMoveRight);
-            controlUp.addEventListener('touchstart', checkAndMoveUp);
-            controlDown.addEventListener('touchstart', checkAndMoveDown);
+            controlLeft.addEventListener('touchstart', function () {
+                checkAndMoveLeft();
+                this.map.updatePosition(this.player.x, this.player.y);
+                this.checkWin();
+                this.checkLoss();
+            }.bind(this));
+
+            controlRight.addEventListener('touchstart', function () {
+                checkAndMoveRight();
+                this.map.updatePosition(this.player.x, this.player.y);
+                this.checkWin();
+                this.checkLoss();
+            }.bind(this));
+
+            controlUp.addEventListener('touchstart', function () {
+                checkAndMoveUp();
+                this.map.updatePosition(this.player.x, this.player.y);
+                this.checkWin();
+                this.checkLoss();
+            }.bind(this));
+
+            controlDown.addEventListener('touchstart', function () {
+                checkAndMoveDown();
+                this.map.updatePosition(this.player.x, this.player.y);
+                this.checkWin();
+                this.checkLoss();
+            }.bind(this));
 
             controls.style.display = 'block';
         }

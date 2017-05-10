@@ -5,27 +5,46 @@ body {
 }
 
 .controls {
-	margin-top: 50px;
+	margin-top: 30px;
 	display: none;
 }
 
 .controls__arrows {
-	width: 100px;
-	height: 100px;
-	margin: 100px auto;
+	width: 75px;
+	height: 75px;
+	margin: 75px auto;
 	position: relative;
 }
 
 .controls__arrow {
+	width: 75px;
+	height: 75px;
+	background: no-repeat 50% 50%;
+	background-size: 100% 100%;
 	position: absolute;
-	border: 50px solid transparent;
 	user-select: none;
 }
 
-.controls__arrow.left {right: 100%; top: 0; border-right-color: #000;}
-.controls__arrow.right {left: 100%; top: 0; border-left-color: #000;}
-.controls__arrow.up {left: 0; bottom: 100%; border-bottom-color: #000;}
-.controls__arrow.down {left: 0; top: 100%; border-top-color: #000;}
+.controls__arrow.left {
+	background-image: url(../i/arrow-left.png);
+	right: 100%;
+	top: 0;
+}
+.controls__arrow.right {
+	background-image: url(../i/arrow-right.png);
+	left: 100%;
+	top: 0;
+}
+.controls__arrow.up {
+	background-image: url(../i/arrow-up.png);
+	left: 0;
+	bottom: 100%;
+}
+.controls__arrow.down {
+	background-image: url(../i/arrow-down.png);
+	left: 0;
+	top: 100%;
+}
 
 .maze-overflow {
 	border: 3px solid #000;
