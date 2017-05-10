@@ -1,15 +1,15 @@
-export function rnd(min, max) {
+export const rnd = (min, max) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
-export function rndCoords(width, height) {
+export const rndCoords = (width, height) => {
 	return {
 		x: rnd(0, width - 1),
 		y: rnd(0, height - 1)
 	};
-}
+};
 
-export function getOpppositeDirection(direction) {
+export const getOpppositeDirection = direction => {
 	if (direction === 'Left') {
 		return 'Right';
 	}
@@ -22,11 +22,12 @@ export function getOpppositeDirection(direction) {
 	if (direction === 'Down') {
 		return 'Up';
 	}
-}
+};
 
-const checkImage = texture =>
-	new Promise(resolve => {
-		texture.onload = () => resolve();
-	});
+const checkImage = texture => {
+    return new Promise(resolve => {
+        texture.onload = () => resolve();
+    });
+};
 
 export const loadImages = (...textures) => Promise.all(textures.map(checkImage));

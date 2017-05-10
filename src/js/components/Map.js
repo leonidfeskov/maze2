@@ -1,4 +1,4 @@
-import { CELLS_BY_X, CELLS_BY_Y, CELLS_ON_SCREEN, SIZE_CELL, CELL_WALL, CELL_EXIT, COLOR_WALL, COLOR_EXIT } from '../constants/constants';
+import { CELLS_BY_X, CELLS_BY_Y, CELLS_ON_SCREEN, SIZE_CELL, CELL_WALL, CELL_EXIT } from '../constants/constants';
 import { loadImages } from '../utils/utils';
 
 
@@ -25,20 +25,18 @@ export default class Map {
 
 		this.ctx = canvas.getContext('2d');
 
-		var self = this;
-		loadImages(...textures).then(function(e) {
-			self.draw();
+		loadImages(...textures).then(() => {
+			this.draw();
 		});
 	}
 
 	drawCell(x, y, texture) {
-		var heightWall = SIZE_CELL / 5;
+		let heightWall = SIZE_CELL / 5;
 		this.ctx.drawImage(texture, x * SIZE_CELL - heightWall, y * SIZE_CELL - heightWall, SIZE_CELL + heightWall, SIZE_CELL + heightWall);
 	}
 
 	draw() {
-		this.ctx.clearRect(0, 0, this.width, this.height);
-		this.ctx.fillStyle = '#fff';
+        this.ctx.fillStyle = '#fff';
 		this.ctx.fillRect(0, 0, this.width, this.height);
 
 		for (let y = 0; y < CELLS_BY_Y; y++) {
@@ -50,6 +48,7 @@ export default class Map {
 				}
 
 				if (cell === CELL_EXIT) {
+					console.log(x, y);
 					this.exit = {
 						x: x,
 						y: y
@@ -61,22 +60,17 @@ export default class Map {
 	}
 
 	isEmptyCell(x, y) {
-		if (
+		return (
 			x >= 0 && x < CELLS_BY_X && y >= 0 && y < CELLS_BY_Y &&
 			this.data[y][x] !== CELL_WALL
-		) {
-			return true;
-		}
-		return false;
+		);
 	}
 
 	updatePosition(x, y) {
-		let areasByY = Math.floor(CELLS_BY_Y / CELLS_ON_SCREEN) - 1;
 		let areaX = Math.floor(x / CELLS_ON_SCREEN);
 		let areaY = Math.floor(y / CELLS_ON_SCREEN);
 
-
 		this.maze.style.left = -(areaX * SIZE_CELL * CELLS_ON_SCREEN) + 'px';
-		this.maze.style.bottom = -((areasByY - areaY) * SIZE_CELL * CELLS_ON_SCREEN) + 'px';
+		this.maze.style.top = -(areaY * SIZE_CELL * CELLS_ON_SCREEN) + 'px';
 	}
 }

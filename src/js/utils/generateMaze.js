@@ -1,22 +1,22 @@
 import { CELL_EMPTY, CELL_WALL, CELL_EXIT } from '../constants/constants';
 
 
-var isInScope = function(map, coord) {
+const isInScope = (map, coord) => {
     return coord[0] >= 0 && coord[0] < map.length && coord[1] >= 0 && coord[1] < map[0].length;
 };
 
 export default function generateMaze(width, height) {
     // уменьшаем размер на 2 клетки, потому что потом добавим стены вокруг лабиринта
-    width = width - 2;
-    height = height - 2;
+    width -= 2;
+    height -= 2;
 
-    var currentPosition = [0, 0];
-    var map = [];
-    var walls = [];
+    const currentPosition = [0, 0];
+    let map = [];
+    let walls = [];
 
-    for (var y = 0; y < height; y++) {
+    for (let y = 0; y < height; y++) {
         map[y] = [];
-        for (var x = 0; x < width; x++) {
+        for (let x = 0; x < width; x++) {
             map[y][x] = CELL_WALL;
         }
     }
@@ -32,9 +32,9 @@ export default function generateMaze(width, height) {
     drawWay(currentPosition[0], currentPosition[1], true);
 
     while(walls.length != 0) {
-        var randomWall = walls[Math.floor(Math.random() * walls.length)];
-        var host = randomWall[2];
-        var opposite = [(host[0] + (randomWall[0]-host[0])*2), (host[1] + (randomWall[1]-host[1])*2)];
+        let randomWall = walls[Math.floor(Math.random() * walls.length)];
+        let host = randomWall[2];
+        let opposite = [(host[0] + (randomWall[0]-host[0])*2), (host[1] + (randomWall[1]-host[1])*2)];
         if (isInScope(map, opposite)) {
             if (map[opposite[0]][opposite[1]] == CELL_EMPTY) {
                 walls.splice(walls.indexOf(randomWall), 1);
@@ -48,11 +48,11 @@ export default function generateMaze(width, height) {
     }
 
     // добавдяем стены вокруг всего лабиринта
-    var horizontalBorder = []
-    for (var x = 0; x < width + 2; x++) {
+    let horizontalBorder = [];
+    for (let x = 0; x < width + 2; x++) {
         horizontalBorder.push(CELL_WALL);
     }
-    for (var y = 0; y < height; y++) {
+    for (let y = 0; y < height; y++) {
         map[y].push(CELL_WALL);
         map[y].unshift(CELL_WALL);
     }
@@ -60,7 +60,8 @@ export default function generateMaze(width, height) {
     map.push(horizontalBorder);
     map.unshift(horizontalBorder);
 
-    map[1][width + 1] = CELL_EXIT;
+    const length = map.length;
+    map[length - 2][length - 2] = CELL_EXIT;
 
     return map;
 };
