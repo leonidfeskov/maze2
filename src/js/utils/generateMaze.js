@@ -61,7 +61,7 @@ export default function generateMaze(width, height) {
     map.unshift(horizontalBorder);
 
     const length = map.length;
-    map[length - 2][length - 2] = CELL_EXIT;
+    map[length - 2][length - 1] = CELL_EXIT;
 
     return map;
 };

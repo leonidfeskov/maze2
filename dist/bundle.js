@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -224,223 +224,12 @@ const loadImages = (...textures) => Promise.all(textures.map(checkImage));
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils__ = __webpack_require__(2);
-
-
-
-// загрузка текстур
-const textureNames = ['wall', 'exit'];
-const textures = textureNames.map(function (name) {
-	const img = new Image();
-	img.src = `i/${name}.png`;
-	return img;
-});
-
-class Map {
-	constructor(data) {
-		this.data = data;
-		this.width = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */];
-		this.height = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* CELLS_BY_Y */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */];
-
-		this.maze = document.querySelector('.js-maze');
-
-		let canvas = document.querySelector('.js-maze-map');
-		canvas.width = this.width;
-		canvas.height = this.height;
-
-		this.ctx = canvas.getContext('2d');
-
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_utils__["d" /* loadImages */])(...textures).then(() => {
-			this.draw();
-		});
-	}
-
-	drawCell(x, y, texture) {
-		let heightWall = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] / 5;
-		this.ctx.drawImage(texture, x * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] - heightWall, y * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] - heightWall, __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + heightWall, __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + heightWall);
-	}
-
-	draw() {
-		this.ctx.fillStyle = '#fff';
-		this.ctx.fillRect(0, 0, this.width, this.height);
-
-		for (let y = 0; y < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* CELLS_BY_Y */]; y++) {
-			for (let x = 0; x < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */]; x++) {
-				let cell = this.data[y][x];
-
-				if (cell === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) {
-					this.drawCell(x, y, textures[0]);
-				}
-
-				if (cell === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["i" /* CELL_EXIT */]) {
-					console.log(x, y);
-					this.exit = {
-						x: x,
-						y: y
-					};
-					this.drawCell(x, y, textures[1]);
-				}
-			}
-		}
-	}
-
-	isEmptyCell(x, y) {
-		return x >= 0 && x < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */] && y >= 0 && y < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* CELLS_BY_Y */] && this.data[y][x] !== __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */];
-	}
-
-	updatePosition(x, y) {
-		let areaX = Math.floor(x / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */]);
-		let areaY = Math.floor(y / __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */]);
-
-		this.maze.style.left = -(areaX * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */]) + 'px';
-		this.maze.style.top = -(areaY * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */]) + 'px';
-	}
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Map;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Unit__ = __webpack_require__(1);
-
-
-class Player extends __WEBPACK_IMPORTED_MODULE_0__Unit__["a" /* default */] {
-	constructor(x, y) {
-		super(x, y);
-		let classes = this.node.classList;
-		classes.add('unit_player');
-
-		this.isMoveProcess = false;
-	}
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Player;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = generateMaze;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
-
-
-const isInScope = (map, coord) => {
-    return coord[0] >= 0 && coord[0] < map.length && coord[1] >= 0 && coord[1] < map[0].length;
-};
-
-function generateMaze(width, height) {
-    // уменьшаем размер на 2 клетки, потому что потом добавим стены вокруг лабиринта
-    width -= 2;
-    height -= 2;
-
-    const currentPosition = [0, 0];
-    let map = [];
-    let walls = [];
-
-    for (let y = 0; y < height; y++) {
-        map[y] = [];
-        for (let x = 0; x < width; x++) {
-            map[y][x] = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */];
-        }
-    }
-
-    function drawWay(y, x, addBlockWalls) {
-        map[y][x] = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["e" /* CELL_EMPTY */];
-        if (addBlockWalls && isInScope(map, [y + 1, x]) && map[y + 1][x] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y + 1, x, [y, x]]);
-        if (addBlockWalls && isInScope(map, [y - 1, x]) && map[y - 1][x] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y - 1, x, [y, x]]);
-        if (addBlockWalls && isInScope(map, [y, x + 1]) && map[y][x + 1] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y, x + 1, [y, x]]);
-        if (addBlockWalls && isInScope(map, [y, x - 1]) && map[y][x - 1] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y, x - 1, [y, x]]);
-    }
-
-    drawWay(currentPosition[0], currentPosition[1], true);
-
-    while (walls.length != 0) {
-        let randomWall = walls[Math.floor(Math.random() * walls.length)];
-        let host = randomWall[2];
-        let opposite = [host[0] + (randomWall[0] - host[0]) * 2, host[1] + (randomWall[1] - host[1]) * 2];
-        if (isInScope(map, opposite)) {
-            if (map[opposite[0]][opposite[1]] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["e" /* CELL_EMPTY */]) {
-                walls.splice(walls.indexOf(randomWall), 1);
-            } else {
-                drawWay(randomWall[0], randomWall[1], false);
-                drawWay(opposite[0], opposite[1], true);
-            }
-        } else {
-            walls.splice(walls.indexOf(randomWall), 1);
-        }
-    }
-
-    // добавдяем стены вокруг всего лабиринта
-    let horizontalBorder = [];
-    for (let x = 0; x < width + 2; x++) {
-        horizontalBorder.push(__WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]);
-    }
-    for (let y = 0; y < height; y++) {
-        map[y].push(__WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]);
-        map[y].unshift(__WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]);
-    }
-
-    map.push(horizontalBorder);
-    map.unshift(horizontalBorder);
-
-    const length = map.length;
-    map[length - 2][length - 2] = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["i" /* CELL_EXIT */];
-
-    return map;
-};
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Game__ = __webpack_require__(7);
-
-
-
-// размеры юнитов зависят от ширины/высоты экрана,
-// чтобы не задавать размеры каждому юниту отделльно, просто добавляем общее CSS-правило
-let styles = document.createElement('style');
-styles.innerHTML = `.unit {width: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px; height: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px;}`;
-document.body.appendChild(styles);
-
-// размеры видимой области карты также зависят от ширины/высоты экрана
-const mapSize = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */];
-let mazeOverflowNode = document.querySelector('.js-maze-overflow');
-mazeOverflowNode.style.width = mapSize + 'px';
-mazeOverflowNode.style.height = mapSize + 'px';
-
-// создаем игру
-let game = new __WEBPACK_IMPORTED_MODULE_1__components_Game__["a" /* default */]({
-	monsters: 4
-});
-
-// пауза
-window.addEventListener('blur', function () {
-	game.pause = true;
-});
-window.addEventListener('focus', function () {
-	game.pause = false;
-});
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_generateMaze__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_generateMaze__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Map__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Map__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Unit__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Player__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Player__ = __webpack_require__(6);
 
 
 
@@ -617,6 +406,220 @@ function isEmptySiblingCell(unit, map) {
     }
     return map.isEmptyCell(siblingCell.x, siblingCell.y);
 }
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Game__ = __webpack_require__(3);
+
+
+
+// размеры юнитов зависят от ширины/высоты экрана,
+// чтобы не задавать размеры каждому юниту отделльно, просто добавляем общее CSS-правило
+let styles = document.createElement('style');
+styles.innerHTML = `.unit {width: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px; height: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px;}`;
+document.body.appendChild(styles);
+
+// размеры видимой области карты также зависят от ширины/высоты экрана
+const mapSize = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */];
+let mazeOverflowNode = document.querySelector('.js-maze-overflow');
+mazeOverflowNode.style.width = mapSize + 'px';
+mazeOverflowNode.style.height = mapSize + 'px';
+
+// создаем игру
+let game = new __WEBPACK_IMPORTED_MODULE_1__components_Game__["a" /* default */]({
+	monsters: 7
+});
+
+// пауза
+window.addEventListener('blur', function () {
+	game.pause = true;
+});
+window.addEventListener('focus', function () {
+	game.pause = false;
+});
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils__ = __webpack_require__(2);
+
+
+
+// загрузка текстур
+const textureNames = ['wall', 'exit'];
+const textures = textureNames.map(function (name) {
+	const img = new Image();
+	img.src = `i/${name}.png`;
+	return img;
+});
+
+class Map {
+	constructor(data) {
+		this.data = data;
+		this.width = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */];
+		this.height = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* CELLS_BY_Y */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */];
+
+		this.maze = document.querySelector('.js-maze');
+
+		let canvas = document.querySelector('.js-maze-map');
+		canvas.width = this.width;
+		canvas.height = this.height;
+
+		this.ctx = canvas.getContext('2d');
+
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils_utils__["d" /* loadImages */])(...textures).then(() => {
+			this.draw();
+		});
+	}
+
+	drawCell(x, y, texture) {
+		let heightWall = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] / 5;
+		this.ctx.drawImage(texture, x * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] - heightWall, y * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] - heightWall, __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + heightWall, __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + heightWall);
+	}
+
+	draw() {
+		this.ctx.fillStyle = '#fff';
+		this.ctx.fillRect(0, 0, this.width, this.height);
+
+		for (let y = 0; y < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* CELLS_BY_Y */]; y++) {
+			for (let x = 0; x < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */]; x++) {
+				let cell = this.data[y][x];
+
+				if (cell === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) {
+					this.drawCell(x, y, textures[0]);
+				}
+
+				if (cell === __WEBPACK_IMPORTED_MODULE_0__constants_constants__["i" /* CELL_EXIT */]) {
+					console.log(x, y);
+					this.exit = {
+						x: x,
+						y: y
+					};
+					this.drawCell(x, y, textures[1]);
+				}
+			}
+		}
+	}
+
+	isEmptyCell(x, y) {
+		return x >= 0 && x < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */] && y >= 0 && y < __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* CELLS_BY_Y */] && this.data[y][x] !== __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */];
+	}
+
+	updatePosition(x, y) {
+		const average = Math.floor(__WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */] / 2);
+
+		if (x > average - 1 && __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */] - x > average) {
+			this.maze.style.left = -((x - average) * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]) + 'px';
+		}
+		if (y > average - 1 && __WEBPACK_IMPORTED_MODULE_0__constants_constants__["d" /* CELLS_BY_Y */] - y > average) {
+			this.maze.style.top = -((y - average) * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]) + 'px';
+		}
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Map;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Unit__ = __webpack_require__(1);
+
+
+class Player extends __WEBPACK_IMPORTED_MODULE_0__Unit__["a" /* default */] {
+	constructor(x, y) {
+		super(x, y);
+		let classes = this.node.classList;
+		classes.add('unit_player');
+
+		this.isMoveProcess = false;
+	}
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Player;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = generateMaze;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
+
+
+const isInScope = (map, coord) => {
+    return coord[0] >= 0 && coord[0] < map.length && coord[1] >= 0 && coord[1] < map[0].length;
+};
+
+function generateMaze(width, height) {
+    // уменьшаем размер на 2 клетки, потому что потом добавим стены вокруг лабиринта
+    width -= 2;
+    height -= 2;
+
+    const currentPosition = [0, 0];
+    let map = [];
+    let walls = [];
+
+    for (let y = 0; y < height; y++) {
+        map[y] = [];
+        for (let x = 0; x < width; x++) {
+            map[y][x] = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */];
+        }
+    }
+
+    function drawWay(y, x, addBlockWalls) {
+        map[y][x] = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["e" /* CELL_EMPTY */];
+        if (addBlockWalls && isInScope(map, [y + 1, x]) && map[y + 1][x] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y + 1, x, [y, x]]);
+        if (addBlockWalls && isInScope(map, [y - 1, x]) && map[y - 1][x] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y - 1, x, [y, x]]);
+        if (addBlockWalls && isInScope(map, [y, x + 1]) && map[y][x + 1] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y, x + 1, [y, x]]);
+        if (addBlockWalls && isInScope(map, [y, x - 1]) && map[y][x - 1] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]) walls.push([y, x - 1, [y, x]]);
+    }
+
+    drawWay(currentPosition[0], currentPosition[1], true);
+
+    while (walls.length != 0) {
+        let randomWall = walls[Math.floor(Math.random() * walls.length)];
+        let host = randomWall[2];
+        let opposite = [host[0] + (randomWall[0] - host[0]) * 2, host[1] + (randomWall[1] - host[1]) * 2];
+        if (isInScope(map, opposite)) {
+            if (map[opposite[0]][opposite[1]] == __WEBPACK_IMPORTED_MODULE_0__constants_constants__["e" /* CELL_EMPTY */]) {
+                walls.splice(walls.indexOf(randomWall), 1);
+            } else {
+                drawWay(randomWall[0], randomWall[1], false);
+                drawWay(opposite[0], opposite[1], true);
+            }
+        } else {
+            walls.splice(walls.indexOf(randomWall), 1);
+        }
+    }
+
+    // добавдяем стены вокруг всего лабиринта
+    let horizontalBorder = [];
+    for (let x = 0; x < width + 2; x++) {
+        horizontalBorder.push(__WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]);
+    }
+    for (let y = 0; y < height; y++) {
+        map[y].push(__WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]);
+        map[y].unshift(__WEBPACK_IMPORTED_MODULE_0__constants_constants__["h" /* CELL_WALL */]);
+    }
+
+    map.push(horizontalBorder);
+    map.unshift(horizontalBorder);
+
+    const length = map.length;
+    map[length - 2][length - 1] = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["i" /* CELL_EXIT */];
+
+    return map;
+};
 
 /***/ })
 /******/ ]);

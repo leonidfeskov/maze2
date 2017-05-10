@@ -67,10 +67,13 @@ export default class Map {
 	}
 
 	updatePosition(x, y) {
-		let areaX = Math.floor(x / CELLS_ON_SCREEN);
-		let areaY = Math.floor(y / CELLS_ON_SCREEN);
+		const average = Math.floor(CELLS_ON_SCREEN / 2);
 
-		this.maze.style.left = -(areaX * SIZE_CELL * CELLS_ON_SCREEN) + 'px';
-		this.maze.style.top = -(areaY * SIZE_CELL * CELLS_ON_SCREEN) + 'px';
+		if (x > (average - 1) && (CELLS_BY_X - x) > average) {
+			this.maze.style.left = -((x - average) * SIZE_CELL) + 'px';
+		}
+		if (y > (average - 1) && (CELLS_BY_Y - y) > average) {
+			this.maze.style.top = -((y - average) * SIZE_CELL) + 'px';
+		}
 	}
 }
