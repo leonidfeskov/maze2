@@ -3,14 +3,26 @@
     <head>
         <meta charset="UTF-8"/>
         <title>Maze</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <div class="maze-overflow js-maze-overflow">
-            <div class="maze js-maze">
-                <canvas class="maze-map js-maze-map"></canvas>
+        <div class="game">
+            <div class="maze-overflow js-maze-overflow">
+                <div class="maze js-maze">
+                    <canvas class="maze-map js-maze-map"></canvas>
+                </div>
+            </div>
+            <div class="controls js-controls">
+                <div class="controls__arrows">
+                    <div class="controls__arrow left js-control-left"></div>
+                    <div class="controls__arrow right js-control-right"></div>
+                    <div class="controls__arrow up js-control-up"></div>
+                    <div class="controls__arrow down js-control-down"></div>
+                </div>
             </div>
         </div>
+
 
         <script src="dist/bundle.js"></script>
     </body>

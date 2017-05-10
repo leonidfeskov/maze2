@@ -58,40 +58,62 @@ export default class Game {
     }
 
     initPlayerControl() {
+        // очередное перемещение игрока возможно только через PLAYER_SPEED ms
+        const processMoving = () => {
+            this.player.isMoveProcess = true;
+            window.setTimeout(() => {
+                this.player.isMoveProcess = false;
+            }, PLAYER_SPEED);
+        }
+
+        const checkAndMoveLeft = () => {
+            if (this.map.isEmptyCell(this.player.x - 1, this.player.y)) {
+                this.player.redrawDirection('Left');
+                this.player.moveLeft();
+            }
+        }
+
+        const checkAndMoveUp = () => {
+            if (this.map.isEmptyCell(this.player.x, this.player.y - 1)) {
+                this.player.redrawDirection('Up');
+                this.player.moveUp();
+            }
+        }
+
+        const checkAndMoveRight = () => {
+            if (this.map.isEmptyCell(this.player.x + 1, this.player.y)) {
+                this.player.redrawDirection('Right');
+                this.player.moveRight();
+            }
+        }
+
+        const checkAndMoveDown = () => {
+            if (this.map.isEmptyCell(this.player.x, this.player.y + 1)) {
+                this.player.redrawDirection('Down');
+                this.player.moveDown();
+            }
+        }
+
+        // Управление с клавиатуры
         document.addEventListener('keydown', function(event) {
             if (event.keyCode < 37 || event.keyCode > 40 || this.player.isMoveProcess) {
                 return false;
             }
 
-            this.player.isMoveProcess = true;
-            window.setTimeout(() => {
-                this.player.isMoveProcess = false;
-            }, PLAYER_SPEED);
+            processMoving();
 
             switch (event.keyCode) {
                 case 37:
-                    if (this.map.isEmptyCell(this.player.x - 1, this.player.y)) {
-                        this.player.redrawDirection('Left');
-                        this.player.moveLeft();
-                    }
+                    checkAndMoveLeft();
                     break;
                 case 38:
-                    if (this.map.isEmptyCell(this.player.x, this.player.y - 1)) {
-                        this.player.redrawDirection('Up');
-                        this.player.moveUp();
-                    }
+                    checkAndMoveUp();
                     break;
                 case 39:
-                    if (this.map.isEmptyCell(this.player.x + 1, this.player.y)) {
-                        this.player.redrawDirection('Right');
-                        this.player.moveRight();
-                    }
+                    checkAndMoveRight();
                     break;
                 case 40:
-                    if (this.map.isEmptyCell(this.player.x, this.player.y + 1)) {
-                        this.player.redrawDirection('Down');
-                        this.player.moveDown();
-                    }
+                    checkAndMoveDown();
                     break;
                 default:
                     break;
@@ -103,6 +125,22 @@ export default class Game {
             this.checkWin();
             this.checkLoss();
         }.bind(this));
+
+        // Управление с помощью контролов на странице
+        if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+            let controls = document.querySelector('.js-controls');
+            let controlLeft = controls.querySelector('.js-control-left');
+            let controlRight = controls.querySelector('.js-control-right');
+            let controlUp = controls.querySelector('.js-control-up');
+            let controlDown = controls.querySelector('.js-control-down');
+
+            controlLeft.addEventListener('touchstart', checkAndMoveLeft);
+            controlRight.addEventListener('touchstart', checkAndMoveRight);
+            controlUp.addEventListener('touchstart', checkAndMoveUp);
+            controlDown.addEventListener('touchstart', checkAndMoveDown);
+
+            controls.style.display = 'block';
+        }
 	}
 
 	initMonsterAI() {

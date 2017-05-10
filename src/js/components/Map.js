@@ -48,7 +48,6 @@ export default class Map {
 				}
 
 				if (cell === CELL_EXIT) {
-					console.log(x, y);
 					this.exit = {
 						x: x,
 						y: y
