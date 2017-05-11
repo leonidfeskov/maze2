@@ -17,4 +17,12 @@ export default class Item {
         this.node.style.top = (this.y * SIZE_CELL) + 'px';
         document.querySelector('.js-maze').appendChild(this.node);
     }
+
+    moveToInventory() {
+        this.node.style.left = 0;
+        this.node.style.top = 0;
+        setTimeout(() => {
+            this.node.remove();
+        }, 500);
+    }
 }

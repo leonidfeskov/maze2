@@ -232,14 +232,14 @@ const loadImages = (...textures) => Promise.all(textures.map(checkImage));
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_generateMaze__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_generateMaze__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Map__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Map__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Unit__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Player__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Item__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Inventory__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Player__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Item__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Inventory__ = __webpack_require__(5);
 
 
 
@@ -294,9 +294,13 @@ class Game {
     checkWin() {
         // Игрок нашел выход
         if (this.player.x === this.map.exit.x && this.player.y === this.map.exit.y) {
-            alert('Win!');
-            //clearInterval(monstersInterval);
-            window.location.reload();
+            let key = this.inventory.items.key;
+            if (!key || key.length < __WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* KEYS_COUNT */]) {
+                alert('Вы не можете открыть дверь, потому что собрали не все ключи. Осталось собрать еще ' + (__WEBPACK_IMPORTED_MODULE_2__constants_constants__["e" /* KEYS_COUNT */] - key.length));
+            } else {
+                alert('Победа!');
+                window.location.reload();
+            }
         }
     }
 
@@ -305,7 +309,6 @@ class Game {
         this.monsters.forEach(monster => {
             if (monster.x === this.player.x && monster.y === this.player.y) {
                 alert('Loss!');
-                //clearInterval(monstersInterval);
                 window.location.reload();
             }
         });
@@ -351,8 +354,8 @@ class Game {
         const takeItem = () => {
             this.items.forEach(item => {
                 if (this.player.x === item.x && this.player.y === item.y) {
+                    item.moveToInventory();
                     this.inventory.addItem(item);
-                    item.node.remove();
                 }
             });
         };
@@ -523,7 +526,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // размеры юнитов зависят от ширины/высоты экрана,
 // чтобы не задавать размеры каждому юниту отделльно, просто добавляем общее CSS-правило
 let styles = document.createElement('style');
-styles.innerHTML = `.unit, .item {width: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px; height: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px;}`;
+styles.innerHTML = `.unit, .item, .inventory__item {width: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px; height: ${__WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */]}px;}`;
 document.body.appendChild(styles);
 
 // размеры видимой области карты также зависят от ширины/высоты экрана
@@ -553,6 +556,51 @@ window.addEventListener('focus', function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
 
 
+class Inventory {
+    constructor() {
+        this.items = {};
+        this.node = document.querySelector('.js-inventory');
+        this.draw();
+    }
+
+    addItem(item) {
+        const type = item.type;
+        if (!this.items[type]) {
+            this.items[type] = [];
+        }
+        item.x = null;
+        item.y = null;
+        this.items[type].push(item);
+        this.redraw();
+    }
+
+    draw() {
+        this.node.style.width = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["b" /* CELLS_ON_SCREEN */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + 'px';
+        this.node.style.height = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + 'px';
+    }
+
+    redraw() {
+        let html = '';
+        for (let type in this.items) {
+            let count = this.items[type].length;
+            html += `<div class="inventory__item inventory__item_${type}">
+                <span class="inventory__item-count">${count}</span>
+            </div>`;
+        }
+        this.node.innerHTML = html;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Inventory;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
+
+
 class Item {
     constructor(type, x, y) {
         this.type = type;
@@ -569,12 +617,20 @@ class Item {
         this.node.style.top = this.y * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + 'px';
         document.querySelector('.js-maze').appendChild(this.node);
     }
+
+    moveToInventory() {
+        this.node.style.left = 0;
+        this.node.style.top = 0;
+        setTimeout(() => {
+            this.node.remove();
+        }, 500);
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Item;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -584,7 +640,7 @@ class Item {
 
 
 // загрузка текстур
-const textureNames = ['cell-wall', 'cell-exit'];
+const textureNames = ['cell-wall', 'cell-door'];
 const textures = textureNames.map(function (name) {
 	const img = new Image();
 	img.src = `i/${name}.png`;
@@ -658,7 +714,7 @@ class Map {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -678,7 +734,7 @@ class Player extends __WEBPACK_IMPORTED_MODULE_0__Unit__["a" /* default */] {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -750,47 +806,6 @@ function generateMaze(width, height) {
 
     return map;
 };
-
-/***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
-
-
-class Inventory {
-    constructor() {
-        this.items = {};
-        this.node = document.querySelector('.js-inventory');
-        this.draw();
-    }
-
-    addItem(item) {
-        const type = item.type;
-        if (!this.items[type]) {
-            this.items[type] = [];
-        }
-        this.items[type].push(item);
-        this.redraw();
-    }
-
-    draw() {
-        this.node.style.width = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["c" /* CELLS_BY_X */] * __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + 'px';
-        this.node.style.height = __WEBPACK_IMPORTED_MODULE_0__constants_constants__["a" /* SIZE_CELL */] + 'px';
-    }
-
-    redraw() {
-        let html = '';
-        for (let type in this.items) {
-            let count = this.items[type].length;
-            html += `<div class="inventory__item"><span class="inventory__item-count">${count}</span></div>`;
-        }
-        this.node.innerHTML = html;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Inventory;
-
 
 /***/ })
 /******/ ]);

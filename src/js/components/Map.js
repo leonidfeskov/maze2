@@ -4,7 +4,7 @@ import { loadImages } from '../utils/utils';
 
 
 // загрузка текстур
-const textureNames = ['cell-wall', 'cell-exit'];
+const textureNames = ['cell-wall', 'cell-door'];
 const textures = textureNames.map(function(name) {
 	const img = new Image();
 	img.src = `i/${name}.png`;

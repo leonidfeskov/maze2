@@ -57,9 +57,13 @@ export default class Game {
     checkWin() {
 		// Игрок нашел выход
         if (this.player.x === this.map.exit.x && this.player.y === this.map.exit.y) {
-            alert('Win!');
-            //clearInterval(monstersInterval);
-            window.location.reload();
+            let key = this.inventory.items.key;
+            if (!key || key.length < KEYS_COUNT) {
+                alert('Вы не можете открыть дверь, потому что собрали не все ключи. Осталось собрать еще ' + (KEYS_COUNT - key.length));
+            } else {
+                alert('Победа!');
+                window.location.reload();
+            }
         }
     }
 
@@ -68,7 +72,6 @@ export default class Game {
         this.monsters.forEach(monster => {
             if (monster.x === this.player.x && monster.y === this.player.y) {
                 alert('Loss!');
-                //clearInterval(monstersInterval);
                 window.location.reload();
             }
         });
@@ -112,10 +115,10 @@ export default class Game {
         };
 
         const takeItem = () => {
-            this.items.forEach(item => {
+            this.items.forEach((item) => {
                 if (this.player.x === item.x && this.player.y === item.y) {
+                    item.moveToInventory();
                     this.inventory.addItem(item);
-                    item.node.remove();
                 }
             });
         };

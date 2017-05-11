@@ -5,7 +5,7 @@ import Game from './components/Game';
 // размеры юнитов зависят от ширины/высоты экрана,
 // чтобы не задавать размеры каждому юниту отделльно, просто добавляем общее CSS-правило
 let styles = document.createElement('style');
-styles.innerHTML = `.unit, .item {width: ${SIZE_CELL}px; height: ${SIZE_CELL}px;}`
+styles.innerHTML = `.unit, .item, .inventory__item {width: ${SIZE_CELL}px; height: ${SIZE_CELL}px;}`
 document.body.appendChild(styles);
 
 

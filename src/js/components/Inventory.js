@@ -1,4 +1,4 @@
-import { SIZE_CELL, CELLS_BY_X } from '../constants/constants';
+import { SIZE_CELL, CELLS_ON_SCREEN } from '../constants/constants';
 
 
 export default class Inventory {
@@ -13,12 +13,14 @@ export default class Inventory {
         if (!this.items[type]) {
             this.items[type] = [];
         }
+        item.x = null;
+        item.y = null;
         this.items[type].push(item);
         this.redraw();
     }
 
     draw() {
-        this.node.style.width = (CELLS_BY_X * SIZE_CELL) + 'px';
+        this.node.style.width = (CELLS_ON_SCREEN * SIZE_CELL) + 'px';
         this.node.style.height = SIZE_CELL + 'px';
     }
 
@@ -26,7 +28,9 @@ export default class Inventory {
         let html = '';
         for (let type in this.items) {
             let count = this.items[type].length;
-            html += `<div class="inventory__item"><span class="inventory__item-count">${count}</span></div>`;
+            html += `<div class="inventory__item inventory__item_${type}">
+                <span class="inventory__item-count">${count}</span>
+            </div>`;
         }
         this.node.innerHTML = html;
     }
