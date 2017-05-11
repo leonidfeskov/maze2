@@ -1,8 +1,7 @@
 import generateMaze from '../utils/generateMaze';
 import { rnd, rndCoords, getOpppositeDirection } from '../utils/utils';
-import { CELLS_BY_X, CELLS_BY_Y, CELL_EMPTY,
-    MONSTER_SPEED, PLAYER_SPEED,
-    KEYS_COUNT, ITEM_KEY} from '../constants/constants';
+import { CELL_EMPTY, MONSTER_SPEED, PLAYER_SPEED, KEYS_COUNT, ITEM_KEY} from '../constants/constants';
+import { showPopupLoss, showPopupWin, showPopupKeys } from './Popup';
 import Map from './Map';
 import Unit from './Unit';
 import Player from './Player';
@@ -13,17 +12,18 @@ import Inventory from './Inventory';
 export default class Game {
 	constructor(options) {
 	    this.pause = false;
+        this.gameOver = false;
 
         let initPlayerX = 1;
         let initPlayerY = 1;
 		// генерируем и рисуем карту
-        this.map = new Map(generateMaze(CELLS_BY_X, CELLS_BY_Y));
+        this.map = new Map(generateMaze(options.sizeX, options.sizeY));
 
         // раскладываем ключи по карте
         this.items = [];
         for (let i = 0; i < KEYS_COUNT; i++) {
             do {
-                let randomCoords = rndCoords(CELLS_BY_X, CELLS_BY_Y);
+                let randomCoords = rndCoords(options.sizeX, options.sizeY);
                 var x = randomCoords.x;
                 var y =  randomCoords.y;
             } while(this.map.data[y][x] !== CELL_EMPTY);
@@ -41,7 +41,7 @@ export default class Game {
         this.monsters = [];
         for (let i = 0; i < options.monsters; i++) {
             do {
-                let randomCoords = rndCoords(CELLS_BY_X, CELLS_BY_Y);
+                let randomCoords = rndCoords(options.sizeX, options.sizeY);
                 var x = randomCoords.x;
                 var y =  randomCoords.y;
             } while(
@@ -57,12 +57,14 @@ export default class Game {
     checkWin() {
 		// Игрок нашел выход
         if (this.player.x === this.map.exit.x && this.player.y === this.map.exit.y) {
+            this.pause = true;
             let key = this.inventory.items.key;
             if (!key || key.length < KEYS_COUNT) {
-                alert('Вы не можете открыть дверь, потому что собрали не все ключи. Осталось собрать еще ' + (KEYS_COUNT - key.length));
+                document.querySelector('.js-keys-count').innerHTML = KEYS_COUNT - key.length;
+                showPopupKeys();
             } else {
-                alert('Победа!');
-                window.location.reload();
+                this.gameOver = true;
+                showPopupWin();
             }
         }
     }
@@ -71,8 +73,9 @@ export default class Game {
 		// Игрок и монстр оказались на одной клетке
         this.monsters.forEach(monster => {
             if (monster.x === this.player.x && monster.y === this.player.y) {
-                alert('Loss!');
-                window.location.reload();
+                this.pause = true;
+                this.gameOver = true;
+                showPopupLoss();
             }
         });
     }
@@ -123,11 +126,25 @@ export default class Game {
             });
         };
 
+        const callbacksAfterMove = () => {
+            takeItem();
+            // показываем другую часть карты, если игрок вышел за границы текущей
+            this.map.updatePosition(this.player.x, this.player.y);
+            this.checkWin();
+            this.checkLoss();
+        }
+
         // Управление с клавиатуры
         document.addEventListener('keydown', function(event) {
+            if (this.gameOver) {
+                return false;
+            }
+
             if (event.keyCode < 37 || event.keyCode > 40 || this.player.isMoveProcess) {
                 return false;
             }
+
+            this.pause = false;
 
             processMoving();
 
@@ -148,13 +165,7 @@ export default class Game {
                     break;
             }
 
-            takeItem();
-
-            // показываем другую часть карты, если игрок вышел за границы текущей
-            this.map.updatePosition(this.player.x, this.player.y);
-
-            this.checkWin();
-            this.checkLoss();
+            callbacksAfterMove();
         }.bind(this));
 
         // Управление с помощью контролов на странице
@@ -166,35 +177,39 @@ export default class Game {
             let controlDown = controls.querySelector('.js-control-down');
 
             controlLeft.addEventListener('touchstart', function(event) {
+                if (this.gameOver) {
+                    return false;
+                }
                 event.preventDefault();
                 checkAndMoveLeft();
-                this.map.updatePosition(this.player.x, this.player.y);
-                this.checkWin();
-                this.checkLoss();
+                callbacksAfterMove();
             }.bind(this));
 
             controlRight.addEventListener('touchstart', function(event) {
+                if (this.gameOver) {
+                    return false;
+                }
                 event.preventDefault();
                 checkAndMoveRight();
-                this.map.updatePosition(this.player.x, this.player.y);
-                this.checkWin();
-                this.checkLoss();
+                callbacksAfterMove();
             }.bind(this));
 
             controlUp.addEventListener('touchstart', function(event) {
+                if (this.gameOver) {
+                    return false;
+                }
                 event.preventDefault();
                 checkAndMoveUp();
-                this.map.updatePosition(this.player.x, this.player.y);
-                this.checkWin();
-                this.checkLoss();
+                callbacksAfterMove();
             }.bind(this));
 
             controlDown.addEventListener('touchstart', function(event) {
+                if (this.gameOver) {
+                    return false;
+                }
                 event.preventDefault();
                 checkAndMoveDown();
-                this.map.updatePosition(this.player.x, this.player.y);
-                this.checkWin();
-                this.checkLoss();
+                callbacksAfterMove();
             }.bind(this));
 
             controls.style.display = 'block';

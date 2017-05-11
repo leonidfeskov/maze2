@@ -24,6 +24,45 @@
             </div>
         </div>
 
+        <div class="popup-overlay js-popup-overlay"></div>
+        <div class="popup js-popup js-popup-rules">
+            <div class="popup-message">
+                Собери все ключи <img src="i/item-key.png" width="50" height="50" alt="Ключ">, чтобы открыть дверь,<br>
+                и найди выход из лабиринта <img src="i/cell-door.png" width="50" height="50" alt="Выход">.<br>
+                <img src="i/player_right.gif" width="50" height="50" alt="Игрок"> Управляй стрелками на клавиатуре.<br>
+                Опосайся зомби <img src="i/zombie_left.gif" width="50" height="50" alt="Зомби">.<br>
+                <span class="btn-ok js-popup-close">Ясно-понятно</span>
+            </div>
+        </div>
+
+        <div class="popup js-popup js-popup-loss" style="display: none;">
+            <div class="popup-message">
+                Ты проиграл :(<br><br>
+                Тебя съел зомби
+                <img src="i/player_right.gif" width="50" height="50" alt="Игрок">
+                <img src="i/zombie_left.gif" width="50" height="50" alt="Зомби">.<br>
+                <span class="btn-ok js-popup-close">Печаль-тоска</span>
+            </div>
+        </div>
+
+        <div class="popup js-popup js-popup-win" style="display: none;">
+            <div class="popup-message">
+                Ура, ты победил :)<br><br>
+                <img src="i/player_right.gif" width="50" height="50" alt="Игрок">
+                <img src="i/cell-door.png" width="50" height="50" alt="Выход">.<br>
+                <span class="btn-ok js-popup-close">Иииихааа!</span>
+            </div>
+        </div>
+
+        <div class="popup js-popup js-popup-keys" style="display: none;">
+            <div class="popup-message">
+                Ты не можешь открыть дверь,<br>
+                потому что еще не нашел все ключи <img src="i/item-key.png" width="50" height="50" alt="Ключ"><br>
+                Осталось найти еще <span class="js-keys-count">5</span>.<br>
+                <span class="btn-ok js-popup-close">Хм, пойду искать</span>
+            </div>
+        </div>
+
 
         <script src="dist/bundle.js"></script>
     </body>

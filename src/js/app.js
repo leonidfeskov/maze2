@@ -18,10 +18,13 @@ mazeOverflowNode.style.height = mapSize + 'px';
 
 // создаем игру
 let game = new Game({
-	monsters: 0
+	sizeX: 55,
+	sizeY: 55,
+	monsters: 25
 });
 
 // пауза
+game.pause = true;
 window.addEventListener('blur', function() {
 	game.pause = true;
 });

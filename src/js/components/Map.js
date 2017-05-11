@@ -15,8 +15,10 @@ const textures = textureNames.map(function(name) {
 export default class Map {
 	constructor(data) {
 		this.data = data;
-		this.width = CELLS_BY_X * SIZE_CELL;
-		this.height = CELLS_BY_Y * SIZE_CELL;
+		this.sizeY = data.length;
+		this.sizeX = data[0].length;
+		this.width = this.sizeX * SIZE_CELL;
+		this.height = this.sizeY * SIZE_CELL;
 
 		this.maze = document.querySelector('.js-maze');
 
@@ -40,8 +42,8 @@ export default class Map {
         this.ctx.fillStyle = '#fff';
 		this.ctx.fillRect(0, 0, this.width, this.height);
 
-		for (let y = 0; y < CELLS_BY_Y; y++) {
-			for (let x = 0; x < CELLS_BY_X; x++) {
+		for (let y = 0; y < this.sizeY; y++) {
+			for (let x = 0; x < this.sizeX; x++) {
 				let cell = this.data[y][x];
 
 				switch (cell) {
@@ -62,7 +64,7 @@ export default class Map {
 
 	isEmptyCell(x, y) {
 		return (
-			x >= 0 && x < CELLS_BY_X && y >= 0 && y < CELLS_BY_Y &&
+			x >= 0 && x < this.sizeX && y >= 0 && y < this.sizeY &&
 			this.data[y][x] !== CELL_WALL
 		);
 	}
@@ -70,10 +72,10 @@ export default class Map {
 	updatePosition(x, y) {
 		const average = Math.floor(CELLS_ON_SCREEN / 2);
 
-		if (x > (average - 1) && (CELLS_BY_X - x) > average) {
+		if (x > (average - 1) && (this.sizeX - x) > average) {
 			this.maze.style.left = -((x - average) * SIZE_CELL) + 'px';
 		}
-		if (y > (average - 1) && (CELLS_BY_Y - y) > average) {
+		if (y > (average - 1) && (this.sizeY - y) > average) {
 			this.maze.style.top = -((y - average) * SIZE_CELL) + 'px';
 		}
 	}
