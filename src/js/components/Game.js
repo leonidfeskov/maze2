@@ -1,10 +1,13 @@
 import generateMaze from '../utils/generateMaze';
 import { rnd, rndCoords, getOpppositeDirection } from '../utils/utils';
 import { CELLS_BY_X, CELLS_BY_Y, CELL_EMPTY,
-    MONSTER_SPEED, PLAYER_SPEED } from '../constants/constants';
+    MONSTER_SPEED, PLAYER_SPEED,
+    KEYS_COUNT, ITEM_KEY} from '../constants/constants';
 import Map from './Map';
 import Unit from './Unit';
 import Player from './Player';
+import Item from './Item';
+import Inventory from './Inventory';
 
 
 export default class Game {
@@ -16,9 +19,23 @@ export default class Game {
 		// генерируем и рисуем карту
         this.map = new Map(generateMaze(CELLS_BY_X, CELLS_BY_Y));
 
+        // раскладываем ключи по карте
+        this.items = [];
+        for (let i = 0; i < KEYS_COUNT; i++) {
+            do {
+                let randomCoords = rndCoords(CELLS_BY_X, CELLS_BY_Y);
+                var x = randomCoords.x;
+                var y =  randomCoords.y;
+            } while(this.map.data[y][x] !== CELL_EMPTY);
+            this.items.push(new Item(ITEM_KEY, x, y));
+        }
+
         // инитим игрока
 		this.player = new Player(initPlayerX, initPlayerY);
         this.initPlayerControl();
+
+        // инитим инвентарь, в который игрок будет класть предметы
+        this.inventory = new Inventory();
 
 		// расставляем монстров в случайные свободные клетки и запускаем их движение
         this.monsters = [];
@@ -64,35 +81,44 @@ export default class Game {
             window.setTimeout(() => {
                 this.player.isMoveProcess = false;
             }, PLAYER_SPEED);
-        }
+        };
 
         const checkAndMoveLeft = () => {
             if (this.map.isEmptyCell(this.player.x - 1, this.player.y)) {
                 this.player.redrawDirection('Left');
                 this.player.moveLeft();
             }
-        }
+        };
 
         const checkAndMoveUp = () => {
             if (this.map.isEmptyCell(this.player.x, this.player.y - 1)) {
                 this.player.redrawDirection('Up');
                 this.player.moveUp();
             }
-        }
+        };
 
         const checkAndMoveRight = () => {
             if (this.map.isEmptyCell(this.player.x + 1, this.player.y)) {
                 this.player.redrawDirection('Right');
                 this.player.moveRight();
             }
-        }
+        };
 
         const checkAndMoveDown = () => {
             if (this.map.isEmptyCell(this.player.x, this.player.y + 1)) {
                 this.player.redrawDirection('Down');
                 this.player.moveDown();
             }
-        }
+        };
+
+        const takeItem = () => {
+            this.items.forEach(item => {
+                if (this.player.x === item.x && this.player.y === item.y) {
+                    this.inventory.addItem(item);
+                    item.node.remove();
+                }
+            });
+        };
 
         // Управление с клавиатуры
         document.addEventListener('keydown', function(event) {
@@ -118,6 +144,8 @@ export default class Game {
                 default:
                     break;
             }
+
+            takeItem();
 
             // показываем другую часть карты, если игрок вышел за границы текущей
             this.map.updatePosition(this.player.x, this.player.y);

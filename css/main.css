@@ -4,6 +4,19 @@ body {
 	padding: 0;
 }
 
+.inventory {
+	box-sizing: border-box;
+	height: 50px;
+	border: 3px solid #000;
+	border-bottom: medium none;
+	margin: 0 auto;
+}
+
+.inventory__item {
+	background-color: #fff;
+	height: 100%;
+}
+
 .controls {
 	margin-top: 30px;
 	display: none;
@@ -71,6 +84,7 @@ body {
 	width: 50px;
 	height: 50px;
 	position: absolute;
+	z-index: 1;
 	left: 0;
 	top: 0;
 	transition: left 0.5s linear 0s, top 0.5s linear 0s;
@@ -83,7 +97,7 @@ body {
 
 .unit_player {
 	background-image: url(../i/player_left.gif);
-	z-index: 1;
+	z-index: 2;
 	transition-duration: 0.1s;
 }
 
@@ -91,3 +105,13 @@ body {
 .unit_player.down {background-image: url(../i/player_left.gif);}
 .unit_player.right {background-image: url(../i/player_right.gif);}
 .unit_player.up {background-image: url(../i/player_right.gif);}
+
+.item {
+	background: no-repeat 0 0;
+	background-size: 80% auto;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+}
+
+.item_key {background-image: url(../i/item-key.png);}

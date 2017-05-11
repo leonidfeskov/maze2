@@ -1,9 +1,10 @@
-import { CELLS_BY_X, CELLS_BY_Y, CELLS_ON_SCREEN, SIZE_CELL, CELL_WALL, CELL_EXIT } from '../constants/constants';
+import { CELLS_BY_X, CELLS_BY_Y, CELLS_ON_SCREEN, SIZE_CELL,
+	CELL_WALL, CELL_EXIT } from '../constants/constants';
 import { loadImages } from '../utils/utils';
 
 
 // загрузка текстур
-const textureNames = ['wall', 'exit'];
+const textureNames = ['cell-wall', 'cell-exit'];
 const textures = textureNames.map(function(name) {
 	const img = new Image();
 	img.src = `i/${name}.png`;
@@ -43,16 +44,17 @@ export default class Map {
 			for (let x = 0; x < CELLS_BY_X; x++) {
 				let cell = this.data[y][x];
 
-				if (cell === CELL_WALL) {
-					this.drawCell(x, y, textures[0]);
-				}
-
-				if (cell === CELL_EXIT) {
-					this.exit = {
-						x: x,
-						y: y
-					};
-					this.drawCell(x, y, textures[1]);
+				switch (cell) {
+					case CELL_WALL:
+                        this.drawCell(x, y, textures[0]);
+						break;
+                    case CELL_EXIT:
+                        this.exit = {
+                            x: x,
+                            y: y
+                        };
+                        this.drawCell(x, y, textures[1]);
+                        break;
 				}
 			}
 		}
