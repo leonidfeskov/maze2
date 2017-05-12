@@ -553,9 +553,9 @@ mazeOverflowNode.style.height = mapSize + 'px';
 
 // создаем игру
 let game = new __WEBPACK_IMPORTED_MODULE_1__components_Game__["a" /* default */]({
-	sizeX: 55,
-	sizeY: 55,
-	monsters: 25
+	sizeX: 33,
+	sizeY: 33,
+	monsters: 10
 });
 
 // пауза
