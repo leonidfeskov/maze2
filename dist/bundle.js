@@ -226,10 +226,10 @@ const loadImages = (...textures) => Promise.all(textures.map(checkImage));
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_generateMaze__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_generateMaze__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_utils__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Popup__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Popup__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Map__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Unit__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Player__ = __webpack_require__(8);
@@ -411,6 +411,7 @@ class Game {
             let controlDown = controls.querySelector('.js-control-down');
 
             controlLeft.addEventListener('touchstart', function (event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
@@ -420,6 +421,7 @@ class Game {
             }.bind(this));
 
             controlRight.addEventListener('touchstart', function (event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
@@ -429,6 +431,7 @@ class Game {
             }.bind(this));
 
             controlUp.addEventListener('touchstart', function (event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
@@ -438,6 +441,7 @@ class Game {
             }.bind(this));
 
             controlDown.addEventListener('touchstart', function (event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
@@ -755,6 +759,56 @@ class Player extends __WEBPACK_IMPORTED_MODULE_0__Unit__["a" /* default */] {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+let popupOverlay = document.querySelector('.js-popup-overlay');
+let popupRules = document.querySelector('.js-popup-rules');
+let popupLoss = document.querySelector('.js-popup-loss');
+let popupWin = document.querySelector('.js-popup-win');
+let popupKeys = document.querySelector('.js-popup-keys');
+
+popupRules.querySelector('.js-popup-close').addEventListener('click', function () {
+	popupOverlay.style.display = 'none';
+	popupRules.style.display = 'none';
+});
+
+popupLoss.querySelector('.js-popup-close').addEventListener('click', function () {
+	window.location.reload();
+});
+
+popupWin.querySelector('.js-popup-close').addEventListener('click', function () {
+	window.location.reload();
+});
+
+popupKeys.querySelector('.js-popup-close').addEventListener('click', function () {
+	popupOverlay.style.display = 'none';
+	popupKeys.style.display = 'none';
+});
+
+const showPopupLoss = () => {
+	popupOverlay.style.display = 'block';
+	popupLoss.style.display = 'block';
+};
+/* harmony export (immutable) */ __webpack_exports__["c"] = showPopupLoss;
+
+
+const showPopupWin = () => {
+	popupOverlay.style.display = 'block';
+	popupWin.style.display = 'block';
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = showPopupWin;
+
+
+const showPopupKeys = () => {
+	popupOverlay.style.display = 'block';
+	popupKeys.style.display = 'block';
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = showPopupKeys;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = generateMaze;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_constants__ = __webpack_require__(0);
 
@@ -823,56 +877,6 @@ function generateMaze(width, height) {
 
     return map;
 };
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-let popupOverlay = document.querySelector('.js-popup-overlay');
-let popupRules = document.querySelector('.js-popup-rules');
-let popupLoss = document.querySelector('.js-popup-loss');
-let popupWin = document.querySelector('.js-popup-win');
-let popupKeys = document.querySelector('.js-popup-keys');
-
-popupRules.querySelector('.js-popup-close').addEventListener('click', function () {
-	popupOverlay.style.display = 'none';
-	popupRules.style.display = 'none';
-});
-
-popupLoss.querySelector('.js-popup-close').addEventListener('click', function () {
-	window.location.reload();
-});
-
-popupWin.querySelector('.js-popup-close').addEventListener('click', function () {
-	window.location.reload();
-});
-
-popupKeys.querySelector('.js-popup-close').addEventListener('click', function () {
-	popupOverlay.style.display = 'none';
-	popupKeys.style.display = 'none';
-});
-
-const showPopupLoss = () => {
-	popupOverlay.style.display = 'block';
-	popupLoss.style.display = 'block';
-};
-/* harmony export (immutable) */ __webpack_exports__["c"] = showPopupLoss;
-
-
-const showPopupWin = () => {
-	popupOverlay.style.display = 'block';
-	popupWin.style.display = 'block';
-};
-/* harmony export (immutable) */ __webpack_exports__["b"] = showPopupWin;
-
-
-const showPopupKeys = () => {
-	popupOverlay.style.display = 'block';
-	popupKeys.style.display = 'block';
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = showPopupKeys;
-
 
 /***/ })
 /******/ ]);

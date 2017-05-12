@@ -132,7 +132,7 @@ export default class Game {
             this.map.updatePosition(this.player.x, this.player.y);
             this.checkWin();
             this.checkLoss();
-        }
+        };
 
         // Управление с клавиатуры
         document.addEventListener('keydown', function(event) {
@@ -177,6 +177,7 @@ export default class Game {
             let controlDown = controls.querySelector('.js-control-down');
 
             controlLeft.addEventListener('touchstart', function(event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
@@ -186,6 +187,7 @@ export default class Game {
             }.bind(this));
 
             controlRight.addEventListener('touchstart', function(event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
@@ -195,6 +197,7 @@ export default class Game {
             }.bind(this));
 
             controlUp.addEventListener('touchstart', function(event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
@@ -204,6 +207,7 @@ export default class Game {
             }.bind(this));
 
             controlDown.addEventListener('touchstart', function(event) {
+                this.pause = false;
                 if (this.gameOver) {
                     return false;
                 }
