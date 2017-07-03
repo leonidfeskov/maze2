@@ -10,13 +10,13 @@ import Inventory from './Inventory';
 
 
 export default class Game {
-	constructor(options) {
-	    this.pause = false;
+    constructor(options) {
+        this.pause = false;
         this.gameOver = false;
 
         let initPlayerX = 1;
         let initPlayerY = 1;
-		// генерируем и рисуем карту
+        // генерируем и рисуем карту
         this.map = new Map(generateMaze(options.sizeX, options.sizeY));
 
         // раскладываем ключи по карте
@@ -31,13 +31,13 @@ export default class Game {
         }
 
         // инитим игрока
-		this.player = new Player(initPlayerX, initPlayerY);
+        this.player = new Player(initPlayerX, initPlayerY);
         this.initPlayerControl();
 
         // инитим инвентарь, в который игрок будет класть предметы
         this.inventory = new Inventory();
 
-		// расставляем монстров в случайные свободные клетки и запускаем их движение
+        // расставляем монстров в случайные свободные клетки и запускаем их движение
         this.monsters = [];
         for (let i = 0; i < options.monsters; i++) {
             do {
@@ -46,16 +46,16 @@ export default class Game {
                 var y =  randomCoords.y;
             } while(
                 // Делаем безопастное пространство для игрока 5x5 клеток в начале игры
-            	(Math.abs(x - initPlayerX) < 5 && Math.abs(y - initPlayerY) < 5) ||
-            	this.map.data[y][x] !== CELL_EMPTY
-			);
+                (Math.abs(x - initPlayerX) < 5 && Math.abs(y - initPlayerY) < 5) ||
+                this.map.data[y][x] !== CELL_EMPTY
+            );
             this.monsters.push(new Unit(x, y));
         }
         this.initMonsterAI();
-	}
+    }
 
     checkWin() {
-		// Игрок нашел выход
+        // Игрок нашел выход
         if (this.player.x === this.map.exit.x && this.player.y === this.map.exit.y) {
             this.pause = true;
             let key = this.inventory.items.key;
@@ -70,7 +70,7 @@ export default class Game {
     }
 
     checkLoss() {
-		// Игрок и монстр оказались на одной клетке
+        // Игрок и монстр оказались на одной клетке
         this.monsters.forEach(monster => {
             if (monster.x === this.player.x && monster.y === this.player.y) {
                 this.pause = true;
@@ -218,9 +218,9 @@ export default class Game {
 
             controls.style.display = 'block';
         }
-	}
+    }
 
-	initMonsterAI() {
+    initMonsterAI() {
         setInterval(() => {
             if (this.pause) {
                 return;

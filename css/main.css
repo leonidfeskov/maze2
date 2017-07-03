@@ -1,81 +1,81 @@
 body {
-	background-color: #ddd;
-	margin: 0;
-	padding: 0;
-	font: 16px/1.2 'Comic-Sans', Arial, sans-serif;
+    background-color: #ddd;
+    margin: 0;
+    padding: 0;
+    font: 16px/1.2 'Comic-Sans', Arial, sans-serif;
 }
 
 .controls {
-	margin-top: 30px;
-	display: none;
+    margin-top: 30px;
+    display: none;
 }
 
 .controls__arrows {
-	width: 75px;
-	height: 75px;
-	margin: 75px auto;
-	position: relative;
+    width: 75px;
+    height: 75px;
+    margin: 75px auto;
+    position: relative;
 }
 
 .controls__arrow {
-	width: 75px;
-	height: 75px;
-	background: no-repeat 50% 50%;
-	background-size: 100% 100%;
-	position: absolute;
-	user-select: none;
+    width: 75px;
+    height: 75px;
+    background: no-repeat 50% 50%;
+    background-size: 100% 100%;
+    position: absolute;
+    user-select: none;
 }
 
 .controls__arrow.left {
-	background-image: url(../i/arrow-left.png);
-	right: 100%;
-	top: 0;
+    background-image: url(../i/arrow-left.png);
+    right: 100%;
+    top: 0;
 }
 .controls__arrow.right {
-	background-image: url(../i/arrow-right.png);
-	left: 100%;
-	top: 0;
+    background-image: url(../i/arrow-right.png);
+    left: 100%;
+    top: 0;
 }
 .controls__arrow.up {
-	background-image: url(../i/arrow-up.png);
-	left: 0;
-	bottom: 100%;
+    background-image: url(../i/arrow-up.png);
+    left: 0;
+    bottom: 100%;
 }
 .controls__arrow.down {
-	background-image: url(../i/arrow-down.png);
-	left: 0;
-	top: 100%;
+    background-image: url(../i/arrow-down.png);
+    left: 0;
+    top: 100%;
 }
 
 .maze-overflow {
-	margin: 0 auto;
-	border: 3px solid #000;
-	box-sizing: border-box;
-	position: relative;
-	overflow: hidden;
+    margin: 0 auto;
+    border: 3px solid #000;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
 }
 
 .maze {
-	position: absolute;
-	top: 0;
-	left: 0;
-	transition: all 0.5s ease 0s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.5s ease 0s;
 }
 
 .maze-map {
-	display: block;
+    display: block;
 }
 
 .unit {
-	background: url(../i/zombie_left.gif) no-repeat 0 0;
-	background-size: 80% auto;
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	transition: left 0.5s linear 0s, top 0.5s linear 0s;
+    background: url(../i/zombie_left.gif) no-repeat 0 0;
+    background-size: 80% auto;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    transition: left 0.5s linear 0s, top 0.5s linear 0s;
 }
 
 .unit.left {background-image: url(../i/zombie_left.gif);}
@@ -84,9 +84,9 @@ body {
 .unit.up {background-image: url(../i/zombie_right.gif);}
 
 .unit_player {
-	background-image: url(../i/player_left.gif);
-	z-index: 2;
-	transition-duration: 0.1s;
+    background-image: url(../i/player_left.gif);
+    z-index: 2;
+    transition-duration: 0.1s;
 }
 
 .unit_player.left {background-image: url(../i/player_left.gif);}
@@ -95,91 +95,91 @@ body {
 .unit_player.up {background-image: url(../i/player_right.gif);}
 
 .inventory {
-	box-sizing: border-box;
-	height: 50px;
-	margin: 0 auto;
-	position: absolute;
-	z-index: 1;
-	top: 0;
-	left: 50%;
-	transform: translateX(-50%);
+    box-sizing: border-box;
+    height: 50px;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .inventory__item {
-	background: #fff no-repeat 50% 50%;
-	background-size: 80% auto;
-	position: relative;
-	border-radius: 50%;
-	margin: 0 5px;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    background: #fff no-repeat 50% 50%;
+    background-size: 80% auto;
+    position: relative;
+    border-radius: 50%;
+    margin: 0 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .inventory__item-count {
-	background: #fff;
-	width: 24px;
-	height: 24px;
-	border-radius: 50%;
-	color: red;
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	font-size: 18px;
-	line-height: 24px;
-	font-weight: bold;
-	text-align: center;
-	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    background: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: red;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .item {
-	background: no-repeat 0 0;
-	background-size: 80% auto;
-	width: 50px;
-	height: 50px;
-	position: absolute;
-	transition: left 0.5s linear 0s, top 0.5s linear 0s;
+    background: no-repeat 0 0;
+    background-size: 80% auto;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    transition: left 0.5s linear 0s, top 0.5s linear 0s;
 }
 
 .item_key,
 .inventory__item {background-image: url(../i/item-key.png);}
 
 .popup-overlay {
-	background: #000;
-	opacity: 0.5;
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	left: 0;
-	top: 0;
-	z-index: 99;
+    background: #000;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99;
 }
 
 .popup {
-	background: #fff;
-	width: 500px;
-	box-sizing: border-box;
-	padding: 30px;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	z-index: 100;
-	transform: translate(-50%, -50%);
+    background: #fff;
+    width: 500px;
+    box-sizing: border-box;
+    padding: 30px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 100;
+    transform: translate(-50%, -50%);
 }
 
 .popup-message {
-	text-align: center;
+    text-align: center;
 }
 
 .popup-message img {
-	vertical-align: middle;
+    vertical-align: middle;
 }
 
 .btn-ok {
-	background: url(../i/btn.png) no-repeat 0 0;
-	width: 200px;
-	height: 50px;
-	text-align: center;
-	line-height: 50px;
-	cursor: pointer;
-	display: inline-block;
-	margin-top: 20px;
+    background: url(../i/btn.png) no-repeat 0 0;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 20px;
 }
